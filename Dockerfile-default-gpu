@@ -44,8 +44,9 @@ RUN if [ -n "${HOROVOD_PIP}" ]; then ldconfig /usr/local/cuda/targets/x86_64-lin
 
 RUN python -m pip install -r /tmp/det_dockerfile_scripts/additional-requirements.txt
 
-ARG DEEPSPEED_PIP
+# ARG DEEPSPEED_PIP
 # ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-RUN if [ -n "$DEEPSPEED_PIP" ]; then /tmp/det_dockerfile_scripts/install_deepspeed.sh; fi
+# RUN if [ -n "$DEEPSPEED_PIP" ]; then /tmp/det_dockerfile_scripts/install_deepspeed.sh; fi
+RUN DS_BUILD_AIO=1 DS_BUILD_FUSED_ADAM=1 DS_BUILD_UTILS=1 python -m pip install "protobuf==3.20.1" git+https://github.com/augmentcode/DeeperSpeed.git@ea3711b1d6b2134d8ad1be26854ff0d9f60c383f --no-binary deepspeed
 
 RUN rm -r /tmp/*
